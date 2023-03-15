@@ -14,7 +14,7 @@ exports.genre_list = function (req, res, next) {
       }
       // Successful, so render.
       res.render("genre_list", {
-        title: "Genre List",
+        title: "ジャンルリスト",
         list_genres: list_genres,
       });
     });
@@ -44,7 +44,7 @@ exports.genre_detail = function (req, res, next) {
       }
       // Successful, so render.
       res.render("genre_detail", {
-        title: "Genre Detail",
+        title: "ジャンル削除",
         genre: results.genre,
         genre_books: results.genre_books,
       });
@@ -54,7 +54,7 @@ exports.genre_detail = function (req, res, next) {
 
 // Display Genre create form on GET.
 exports.genre_create_get = function (req, res, next) {
-  res.render("genre_form", { title: "Create Genre" });
+  res.render("genre_form", { title: "ジャンル登録フォーム" });
 };
 
 // Handle Genre create on POST.
@@ -76,7 +76,7 @@ exports.genre_create_post = [
     if (!errors.isEmpty()) {
       // There are errors. Render the form again with sanitized values/error messages.
       res.render("genre_form", {
-        title: "Create Genre",
+        title: "ジャンル登録フォーム",
         genre: genre,
         errors: errors.array(),
       });
@@ -127,7 +127,7 @@ exports.genre_delete_get = function (req, res, next) {
       }
       // Successful, so render.
       res.render("genre_delete", {
-        title: "Delete Genre",
+        title: "ジャンル削除",
         genre: results.genre,
         genre_books: results.genre_books,
       });
@@ -154,7 +154,7 @@ exports.genre_delete_post = function (req, res, next) {
       if (results.genre_books.length > 0) {
         // Genre has books. Render in same way as for GET route.
         res.render("genre_delete", {
-          title: "Delete Genre",
+          title: "ジャンル削除",
           genre: results.genre,
           genre_books: results.genre_books,
         });
@@ -186,7 +186,7 @@ exports.genre_update_get = function (req, res, next) {
       return next(err);
     }
     // Success.
-    res.render("genre_form", { title: "Update Genre", genre: genre });
+    res.render("genre_form", { title: "ジャンル更新フォーム", genre: genre });
   });
 };
 
@@ -212,7 +212,7 @@ exports.genre_update_post = [
     if (!errors.isEmpty()) {
       // There are errors. Render the form again with sanitized values and error messages.
       res.render("genre_form", {
-        title: "Update Genre",
+        title: "ジャンル更新フォーム",
         genre: genre,
         errors: errors.array(),
       });

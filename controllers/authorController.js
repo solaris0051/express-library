@@ -14,7 +14,7 @@ exports.author_list = function (req, res, next) {
       }
       // Successful, so render.
       res.render("author_list", {
-        title: "Author List",
+        title: "著者リスト",
         author_list: list_authors,
       });
     });
@@ -43,7 +43,7 @@ exports.author_detail = function (req, res, next) {
       }
       // Successful, so render.
       res.render("author_detail", {
-        title: "Author Detail",
+        title: "著者詳細",
         author: results.author,
         author_books: results.authors_books,
       });
@@ -53,7 +53,7 @@ exports.author_detail = function (req, res, next) {
 
 // Display Author create form on GET.
 exports.author_create_get = function (req, res, next) {
-  res.render("author_form", { title: "Create Author" });
+  res.render("author_form", { title: "著者新規登録" });
 };
 
 // Handle Author create on POST.
@@ -98,7 +98,7 @@ exports.author_create_post = [
     if (!errors.isEmpty()) {
       // There are errors. Render form again with sanitized values/errors messages.
       res.render("author_form", {
-        title: "Create Author",
+        title: "著者新規登録",
         author: author,
         errors: errors.array(),
       });
@@ -139,7 +139,7 @@ exports.author_delete_get = function (req, res, next) {
       }
       // Successful, so render.
       res.render("author_delete", {
-        title: "Delete Author",
+        title: "著者削除",
         author: results.author,
         author_books: results.authors_books,
       });
@@ -166,7 +166,7 @@ exports.author_delete_post = function (req, res, next) {
       if (results.authors_books.length > 0) {
         // Author has books. Render in same way as for GET route.
         res.render("author_delete", {
-          title: "Delete Author",
+          title: "著者削除",
           author: results.author,
           author_books: results.authors_books,
         });
@@ -198,7 +198,7 @@ exports.author_update_get = function (req, res, next) {
       return next(err);
     }
     // Success.
-    res.render("author_form", { title: "Update Author", author: author });
+    res.render("author_form", { title: "著者更新", author: author });
   });
 };
 
@@ -245,7 +245,7 @@ exports.author_update_post = [
     if (!errors.isEmpty()) {
       // There are errors. Render the form again with sanitized values and error messages.
       res.render("author_form", {
-        title: "Update Author",
+        title: "著者更新",
         author: author,
         errors: errors.array(),
       });

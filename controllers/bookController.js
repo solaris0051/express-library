@@ -28,7 +28,7 @@ exports.index = function (req, res) {
     },
     function (err, results) {
       res.render("index", {
-        title: "Local Library Home",
+        title: "書籍管理ホーム",
         error: err,
         data: results,
       });
@@ -46,7 +46,7 @@ exports.book_list = function (req, res, next) {
         return next(err);
       } else {
         // Successful, so render
-        res.render("book_list", { title: "Book List", book_list: list_books });
+        res.render("book_list", { title: "書籍リスト", book_list: list_books });
       }
     });
 };
