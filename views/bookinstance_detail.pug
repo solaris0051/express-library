@@ -4,11 +4,11 @@ block content
 
   h1 ID: #{bookinstance._id}
   
-  p #[strong Title:] 
+  p #[strong 書籍名:] 
     a(href=bookinstance.book.url) #{bookinstance.book.title}
-  p #[strong Imprint:] #{bookinstance.imprint}
+  p #[strong 版:] #{bookinstance.imprint}
 
-  p #[strong Status:] 
+  p #[strong 状況:] 
     if bookinstance.status=='Available'
       span.text-success #{bookinstance.status}
     else if bookinstance.status=='Maintenance'
@@ -17,10 +17,10 @@ block content
       span.text-warning #{bookinstance.status} 
       
   if bookinstance.status!='Available'
-    p #[strong Due back:] #{bookinstance.due_back_formatted}
+    p #[strong 返却日:] #{bookinstance.due_back_formatted}
 
   hr
   p
-    a(href=bookinstance.url+'/delete') Delete BookInstance
+    a(href=bookinstance.url+'/delete') 書籍現物削除
   p
-    a(href=bookinstance.url+'/update') Update BookInstance
+    a(href=bookinstance.url+'/update') 書籍現物更新

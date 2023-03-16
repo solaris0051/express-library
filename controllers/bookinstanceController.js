@@ -14,7 +14,7 @@ exports.bookinstance_list = function (req, res, next) {
       }
       // Successful, so render.
       res.render("bookinstance_list", {
-        title: "Book Instance List",
+        title: "書籍現物リスト",
         bookinstance_list: list_bookinstances,
       });
     });
@@ -36,7 +36,7 @@ exports.bookinstance_detail = function (req, res, next) {
       }
       // Successful, so render.
       res.render("bookinstance_detail", {
-        title: "Book:",
+        title: "書籍:",
         bookinstance: bookinstance,
       });
     });
@@ -50,7 +50,7 @@ exports.bookinstance_create_get = function (req, res, next) {
     }
     // Successful, so render.
     res.render("bookinstance_form", {
-      title: "Create BookInstance",
+      title: "書籍現物登録フォーム",
       book_list: books,
     });
   });
@@ -59,13 +59,13 @@ exports.bookinstance_create_get = function (req, res, next) {
 // Handle BookInstance create on POST.
 exports.bookinstance_create_post = [
   // Validate and sanitize fields.
-  body("book", "Book must be specified").trim().isLength({ min: 1 }).escape(),
-  body("imprint", "Imprint must be specified")
+  body("book", "書籍を指定してください").trim().isLength({ min: 1 }).escape(),
+  body("imprint", "版を指定してください")
     .trim()
     .isLength({ min: 1 })
     .escape(),
   body("status").escape(),
-  body("due_back", "Invalid date")
+  body("due_back", "日付が正しくありません。")
     .optional({ checkFalsy: true })
     .isISO8601()
     .toDate(),
@@ -91,7 +91,7 @@ exports.bookinstance_create_post = [
         }
         // Successful, so render.
         res.render("bookinstance_form", {
-          title: "Create BookInstance",
+          title: "書籍現物登録フォーム",
           book_list: books,
           selected_book: bookinstance.book._id,
           errors: errors.array(),
@@ -126,7 +126,7 @@ exports.bookinstance_delete_get = function (req, res, next) {
       }
       // Successful, so render.
       res.render("bookinstance_delete", {
-        title: "Delete BookInstance",
+        title: "書籍現物削除",
         bookinstance: bookinstance,
       });
     });
@@ -168,7 +168,7 @@ exports.bookinstance_update_get = function (req, res, next) {
       }
       // Success.
       res.render("bookinstance_form", {
-        title: "Update  BookInstance",
+        title: "書籍現物更新フォーム",
         book_list: results.books,
         selected_book: results.bookinstance.book._id,
         bookinstance: results.bookinstance,
@@ -180,13 +180,13 @@ exports.bookinstance_update_get = function (req, res, next) {
 // Handle BookInstance update on POST.
 exports.bookinstance_update_post = [
   // Validate and sanitize fields.
-  body("book", "Book must be specified").trim().isLength({ min: 1 }).escape(),
-  body("imprint", "Imprint must be specified")
+  body("book", "書籍を指定してください。").trim().isLength({ min: 1 }).escape(),
+  body("imprint", "版を指定してください。")
     .trim()
     .isLength({ min: 1 })
     .escape(),
   body("status").escape(),
-  body("due_back", "Invalid date")
+  body("due_back", "日付が正しくありません。")
     .optional({ checkFalsy: true })
     .isISO8601()
     .toDate(),
@@ -213,7 +213,7 @@ exports.bookinstance_update_post = [
         }
         // Successful, so render.
         res.render("bookinstance_form", {
-          title: "Update BookInstance",
+          title: "書籍現物更新フォーム",
           book_list: books,
           selected_book: bookinstance.book._id,
           errors: errors.array(),

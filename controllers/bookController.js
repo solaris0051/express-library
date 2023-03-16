@@ -71,7 +71,7 @@ exports.book_detail = function (req, res, next) {
       }
       if (results.book == null) {
         // No results.
-        var err = new Error("Book not found");
+        var err = new Error("書籍がありません。");
         err.status = 404;
         return next(err);
       }
@@ -102,7 +102,7 @@ exports.book_create_get = function (req, res, next) {
         return next(err);
       }
       res.render("book_form", {
-        title: "Create Book",
+        title: "書籍登録",
         authors: results.authors,
         genres: results.genres,
       });
@@ -122,19 +122,19 @@ exports.book_create_post = [
   },
 
   // Validate and sanitize fields.
-  body("title", "Title must not be empty.")
+  body("title", "書籍名を指定してください。")
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body("author", "Author must not be empty.")
+  body("author", "著者を指定してください。")
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body("summary", "Summary must not be empty.")
+  body("summary", "要約を指定してください。")
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body("isbn", "ISBN must not be empty").trim().isLength({ min: 1 }).escape(),
+  body("isbn", "ISBNを指定してください。").trim().isLength({ min: 1 }).escape(),
   body("genre.*").escape(),
   // Process request after validation and sanitization.
   (req, res, next) => {
@@ -175,7 +175,7 @@ exports.book_create_post = [
             }
           }
           res.render("book_form", {
-            title: "Create Book",
+            title: "書籍登録",
             authors: results.authors,
             genres: results.genres,
             book: book,
@@ -221,7 +221,7 @@ exports.book_delete_get = function (req, res, next) {
       }
       // Successful, so render.
       res.render("book_delete", {
-        title: "Delete Book",
+        title: "書籍削除",
         book: results.book,
         book_instances: results.book_bookinstances,
       });
@@ -253,7 +253,7 @@ exports.book_delete_post = function (req, res, next) {
       if (results.book_bookinstances.length > 0) {
         // Book has book_instances. Render in same way as for GET route.
         res.render("book_delete", {
-          title: "Delete Book",
+          title: "書籍削除",
           book: results.book,
           book_instances: results.book_bookinstances,
         });
@@ -321,7 +321,7 @@ exports.book_update_get = function (req, res, next) {
         }
       }
       res.render("book_form", {
-        title: "Update Book",
+        title: "書籍更新",
         authors: results.authors,
         genres: results.genres,
         book: results.book,
@@ -342,19 +342,19 @@ exports.book_update_post = [
   },
 
   // Validate and sanitize fields.
-  body("title", "Title must not be empty.")
+  body("title", "書籍を指定してください。")
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body("author", "Author must not be empty.")
+  body("author", "著者を指定してください。")
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body("summary", "Summary must not be empty.")
+  body("summary", "要約を指定してください。")
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body("isbn", "ISBN must not be empty").trim().isLength({ min: 1 }).escape(),
+  body("isbn", "ISBNを指定してください。").trim().isLength({ min: 1 }).escape(),
   body("genre.*").escape(),
 
   // Process request after validation and sanitization.
@@ -397,7 +397,7 @@ exports.book_update_post = [
             }
           }
           res.render("book_form", {
-            title: "Update Book",
+            title: "書籍更新",
             authors: results.authors,
             genres: results.genres,
             book: book,
