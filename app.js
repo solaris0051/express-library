@@ -17,7 +17,7 @@ var app = express();
 var RateLimit = require("express-rate-limit");
 var limiter = RateLimit({
   windowMs: 1 * 60 * 1000, // 1 minute
-  max: 20,
+  max: 100,
 });
 // Apply rate limiter to all requests
 app.use(limiter);
@@ -27,7 +27,7 @@ const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 
 const dev_db_url =
-  "mongodb+srv://cooluser:coolpassword@cluster0.lz91hw2.mongodb.net/local_library?retryWrites=true&w=majority";
+  "mongodb+srv://docodoco0713:0Y8nczZBMCaiUe40@cluster0.iki2ezu.mongodb.net/local_library?retryWrites=true&w=majority";
 const mongoDB = process.env.MONGODB_URI || dev_db_url;
 
 main().catch((err) => console.log(err));
