@@ -17,7 +17,7 @@ exports.index = function (req, res) {
         BookInstance.countDocuments({}, callback);
       },
       book_instance_available_count: function (callback) {
-        BookInstance.countDocuments({ status: "Available" }, callback);
+        BookInstance.countDocuments({ status: "貸出可能" }, callback);
       },
       author_count: function (callback) {
         Author.countDocuments({}, callback);
@@ -46,7 +46,7 @@ exports.book_list = function (req, res, next) {
         return next(err);
       } else {
         // Successful, so render
-        res.render("book_list", { title: "書籍リスト", book_list: list_books });
+        res.render("book_list", { title: "書籍名リスト", book_list: list_books });
       }
     });
 };
@@ -71,7 +71,7 @@ exports.book_detail = function (req, res, next) {
       }
       if (results.book == null) {
         // No results.
-        var err = new Error("書籍がありません。");
+        var err = new Error("書籍名がありません。");
         err.status = 404;
         return next(err);
       }
@@ -102,7 +102,7 @@ exports.book_create_get = function (req, res, next) {
         return next(err);
       }
       res.render("book_form", {
-        title: "書籍登録",
+        title: "書籍名登録",
         authors: results.authors,
         genres: results.genres,
       });
@@ -175,7 +175,7 @@ exports.book_create_post = [
             }
           }
           res.render("book_form", {
-            title: "書籍登録",
+            title: "書籍名登録",
             authors: results.authors,
             genres: results.genres,
             book: book,
@@ -221,7 +221,7 @@ exports.book_delete_get = function (req, res, next) {
       }
       // Successful, so render.
       res.render("book_delete", {
-        title: "書籍削除",
+        title: "書籍名削除",
         book: results.book,
         book_instances: results.book_bookinstances,
       });
@@ -253,7 +253,7 @@ exports.book_delete_post = function (req, res, next) {
       if (results.book_bookinstances.length > 0) {
         // Book has book_instances. Render in same way as for GET route.
         res.render("book_delete", {
-          title: "書籍削除",
+          title: "書籍名削除",
           book: results.book,
           book_instances: results.book_bookinstances,
         });
@@ -321,7 +321,7 @@ exports.book_update_get = function (req, res, next) {
         }
       }
       res.render("book_form", {
-        title: "書籍更新",
+        title: "書籍名更新",
         authors: results.authors,
         genres: results.genres,
         book: results.book,
@@ -342,7 +342,7 @@ exports.book_update_post = [
   },
 
   // Validate and sanitize fields.
-  body("title", "書籍を指定してください。")
+  body("title", "書籍名を指定してください。")
     .trim()
     .isLength({ min: 1 })
     .escape(),
@@ -397,7 +397,7 @@ exports.book_update_post = [
             }
           }
           res.render("book_form", {
-            title: "書籍更新",
+            title: "書籍名更新",
             authors: results.authors,
             genres: results.genres,
             book: book,

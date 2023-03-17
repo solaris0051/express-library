@@ -18,14 +18,14 @@ block content
     
     each val in book_instances
       hr
-      if val.status=='Available'
+      if val.status=='貸出可能'
         p.text-success #{val.status}
-      else if val.status=='Maintenance'
+      else if val.status=='準備中'
         p.text-danger #{val.status}
       else
         p.text-warning #{val.status} 
       p #[strong 版:] #{val.imprint}
-      if val.status!='Available'
+      if val.status!='貸出可能'
         p #[strong 返却日:] #{val.due_back}
       p #[strong Id:] 
         a(href=val.url) #{val._id}
@@ -35,6 +35,6 @@ block content
       
   hr
   p
-    a(href=book.url+'/delete') 書籍削除
+    a(href=book.url+'/delete') 書籍名削除
   p
-    a(href=book.url+'/update') 書籍更新
+    a(href=book.url+'/update') 書籍名更新

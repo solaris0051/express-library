@@ -30,13 +30,13 @@ exports.bookinstance_detail = function (req, res, next) {
       }
       if (bookinstance == null) {
         // No results.
-        var err = new Error("Book copy not found");
+        var err = new Error("書籍名がありません。");
         err.status = 404;
         return next(err);
       }
       // Successful, so render.
       res.render("bookinstance_detail", {
-        title: "書籍:",
+        title: "書籍名:",
         bookinstance: bookinstance,
       });
     });
@@ -59,7 +59,7 @@ exports.bookinstance_create_get = function (req, res, next) {
 // Handle BookInstance create on POST.
 exports.bookinstance_create_post = [
   // Validate and sanitize fields.
-  body("book", "書籍を指定してください").trim().isLength({ min: 1 }).escape(),
+  body("book", "書籍名を指定してください").trim().isLength({ min: 1 }).escape(),
   body("imprint", "版を指定してください")
     .trim()
     .isLength({ min: 1 })
@@ -162,7 +162,7 @@ exports.bookinstance_update_get = function (req, res, next) {
       }
       if (results.bookinstance == null) {
         // No results.
-        var err = new Error("Book copy not found");
+        var err = new Error("書籍現物がありません。");
         err.status = 404;
         return next(err);
       }
@@ -180,7 +180,7 @@ exports.bookinstance_update_get = function (req, res, next) {
 // Handle BookInstance update on POST.
 exports.bookinstance_update_post = [
   // Validate and sanitize fields.
-  body("book", "書籍を指定してください。").trim().isLength({ min: 1 }).escape(),
+  body("book", "書籍名を指定してください。").trim().isLength({ min: 1 }).escape(),
   body("imprint", "版を指定してください。")
     .trim()
     .isLength({ min: 1 })

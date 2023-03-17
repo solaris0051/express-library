@@ -7,15 +7,15 @@ block content
   each val in bookinstance_list
     li 
       a(href=val.url) #{val.book.title} : #{val.imprint} - 
-      if val.status=='Available'
+      if val.status=='貸出可能'
         span.text-success #{val.status}
-      else if val.status=='Maintenance'
+      else if val.status=='準備中'
         span.text-danger #{val.status}
       else
         span.text-warning #{val.status} 
-      if val.status!='Available'
+      if val.status!='貸出可能'
         span  (期限: #{val.due_back_formatted} )
         
 
   else
-    li 書籍現物はありません。
+    li 書籍現物がありません。

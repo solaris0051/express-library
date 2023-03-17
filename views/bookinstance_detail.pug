@@ -9,14 +9,14 @@ block content
   p #[strong 版:] #{bookinstance.imprint}
 
   p #[strong 状況:] 
-    if bookinstance.status=='Available'
+    if bookinstance.status=='貸出可能'
       span.text-success #{bookinstance.status}
-    else if bookinstance.status=='Maintenance'
+    else if bookinstance.status=='準備中'
       span.text-danger #{bookinstance.status}
     else
       span.text-warning #{bookinstance.status} 
       
-  if bookinstance.status!='Available'
+  if bookinstance.status!='貸出可能'
     p #[strong 返却日:] #{bookinstance.due_back_formatted}
 
   hr
