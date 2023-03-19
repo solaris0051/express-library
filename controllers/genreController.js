@@ -38,7 +38,7 @@ exports.genre_detail = function (req, res, next) {
       }
       if (results.genre == null) {
         // No results.
-        var err = new Error("Genre not found");
+        var err = new Error("ジャンルがありません。");
         err.status = 404;
         return next(err);
       }
@@ -60,7 +60,7 @@ exports.genre_create_get = function (req, res, next) {
 // Handle Genre create on POST.
 exports.genre_create_post = [
   // Validate and santize the name field.
-  body("name", "Genre name must contain at least 3 characters")
+  body("name", "ジャンルは3文字以上で指定してください。")
     .trim()
     .isLength({ min: 3 })
     .escape(),
@@ -181,7 +181,7 @@ exports.genre_update_get = function (req, res, next) {
     }
     if (genre == null) {
       // No results.
-      var err = new Error("Genre not found");
+      var err = new Error("ジャンルがありません。");
       err.status = 404;
       return next(err);
     }
@@ -193,7 +193,7 @@ exports.genre_update_get = function (req, res, next) {
 // Handle Genre update on POST.
 exports.genre_update_post = [
   // Validate and sanitze the name field.
-  body("name", "Genre name must contain at least 3 characters")
+  body("name", "ジャンルは3文字以上で指定してください。")
     .trim()
     .isLength({ min: 3 })
     .escape(),

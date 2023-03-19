@@ -37,7 +37,7 @@ exports.author_detail = function (req, res, next) {
       } // Error in API usage.
       if (results.author == null) {
         // No results.
-        var err = new Error("Author not found");
+        var err = new Error("著者がありません。");
         err.status = 404;
         return next(err);
       }
@@ -63,21 +63,21 @@ exports.author_create_post = [
     .trim()
     .isLength({ min: 1 })
     .escape()
-    .withMessage("First name must be specified.")
+    .withMessage("名を指定してください。")
     .isAlphanumeric()
-    .withMessage("First name has non-alphanumeric characters."),
+    .withMessage("氏は半角アルファベットで指定してください。"),
   body("family_name")
     .trim()
     .isLength({ min: 1 })
     .escape()
-    .withMessage("Family name must be specified.")
+    .withMessage("氏を指定してください。")
     .isAlphanumeric()
-    .withMessage("Family name has non-alphanumeric characters."),
-  body("date_of_birth", "Invalid date of birth")
+    .withMessage("氏は半角アルファベットで指定してください。"),
+  body("date_of_birth", "無効な生年月日です。")
     .optional({ checkFalsy: true })
     .isISO8601()
     .toDate(),
-  body("date_of_death", "Invalid date of death")
+  body("date_of_death", "無効な没年月日です。")
     .optional({ checkFalsy: true })
     .isISO8601()
     .toDate(),
@@ -193,7 +193,7 @@ exports.author_update_get = function (req, res, next) {
     }
     if (author == null) {
       // No results.
-      var err = new Error("Author not found");
+      var err = new Error("著者がありません。");
       err.status = 404;
       return next(err);
     }
@@ -209,21 +209,21 @@ exports.author_update_post = [
     .trim()
     .isLength({ min: 1 })
     .escape()
-    .withMessage("First name must be specified.")
+    .withMessage("名を指定してください。")
     .isAlphanumeric()
-    .withMessage("First name has non-alphanumeric characters."),
+    .withMessage("名は半角アルファベットで指定してください。"),
   body("family_name")
     .trim()
     .isLength({ min: 1 })
     .escape()
-    .withMessage("Family name must be specified.")
+    .withMessage("氏を指定してください。")
     .isAlphanumeric()
-    .withMessage("Family name has non-alphanumeric characters."),
-  body("date_of_birth", "Invalid date of birth")
+    .withMessage("氏は半角アルファベットで指定してください。"),
+  body("date_of_birth", "無効な生年月日です。")
     .optional({ checkFalsy: true })
     .isISO8601()
     .toDate(),
-  body("date_of_death", "Invalid date of death")
+  body("date_of_death", "無効な没年月日です。")
     .optional({ checkFalsy: true })
     .isISO8601()
     .toDate(),

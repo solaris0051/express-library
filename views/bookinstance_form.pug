@@ -5,8 +5,8 @@ block content
 
   form(method='POST' action='')
     div.form-group
-      label(for='book') 書籍:
-      select#book.form-control(type='select', placeholder='書籍を選んでください。' name='book' required='true' )
+      label(for='book') 書籍名:
+      select#book.form-control(type='select', placeholder='書籍名を選んでください。' name='book' required='true' )
         - book_list.sort(function(a, b) {let textA = a.title.toUpperCase(); let textB = b.title.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
         for book in book_list
           option(value=book._id, selected=(selected_book==book._id.toString() ? 'selected' : false) ) #{book.title}

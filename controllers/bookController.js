@@ -296,7 +296,7 @@ exports.book_update_get = function (req, res, next) {
       }
       if (results.book == null) {
         // No results.
-        var err = new Error("Book not found");
+        var err = new Error("書籍名がありません。");
         err.status = 404;
         return next(err);
       }
