@@ -53,7 +53,7 @@ exports.author_detail = function (req, res, next) {
 
 // Display Author create form on GET.
 exports.author_create_get = function (req, res, next) {
-  res.render("author_form", { title: "著者新規登録" });
+  res.render("author_form", { title: "著者登録フォーム" });
 };
 
 // Handle Author create on POST.
@@ -98,7 +98,7 @@ exports.author_create_post = [
     if (!errors.isEmpty()) {
       // There are errors. Render form again with sanitized values/errors messages.
       res.render("author_form", {
-        title: "著者新規登録",
+        title: "著者登録フォーム",
         author: author,
         errors: errors.array(),
       });

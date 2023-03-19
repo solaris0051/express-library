@@ -102,7 +102,7 @@ exports.book_create_get = function (req, res, next) {
         return next(err);
       }
       res.render("book_form", {
-        title: "書籍名登録",
+        title: "書籍名登録フォーム",
         authors: results.authors,
         genres: results.genres,
       });
@@ -175,7 +175,7 @@ exports.book_create_post = [
             }
           }
           res.render("book_form", {
-            title: "書籍名登録",
+            title: "書籍名登録フォーム",
             authors: results.authors,
             genres: results.genres,
             book: book,
