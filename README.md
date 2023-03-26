@@ -1,2 +1,2 @@
-# express-locallibrary-tutorial
+# express-library
 node+express+pug+mongodb
