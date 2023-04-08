@@ -4,7 +4,6 @@ var async = require("async");
 
 const { body, validationResult } = require("express-validator");
 
-// Display list of all BookInstances.
 exports.bookinstance_list = function (req, res, next) {
   BookInstance.find()
     .populate("book")
@@ -12,7 +11,6 @@ exports.bookinstance_list = function (req, res, next) {
       if (err) {
         return next(err);
       }
-      // Successful, so render.
       res.render("bookinstance_list", {
         title: "書籍現物リスト",
         bookinstance_list: list_bookinstances,
@@ -20,7 +18,6 @@ exports.bookinstance_list = function (req, res, next) {
     });
 };
 
-// Display detail page for a specific BookInstance.
 exports.bookinstance_detail = function (req, res, next) {
   BookInstance.findById(req.params.id)
     .populate("book")
@@ -29,12 +26,10 @@ exports.bookinstance_detail = function (req, res, next) {
         return next(err);
       }
       if (bookinstance == null) {
-        // No results.
         var err = new Error("書籍名がありません。");
         err.status = 404;
         return next(err);
       }
-      // Successful, so render.
       res.render("bookinstance_detail", {
         title: "書籍名:",
         bookinstance: bookinstance,
@@ -42,13 +37,11 @@ exports.bookinstance_detail = function (req, res, next) {
     });
 };
 
-// Display BookInstance create form on GET.
 exports.bookinstance_create_get = function (req, res, next) {
   Book.find({}, "title").exec(function (err, books) {
     if (err) {
       return next(err);
     }
-    // Successful, so render.
     res.render("bookinstance_form", {
       title: "書籍現物登録フォーム",
       book_list: books,
@@ -56,9 +49,7 @@ exports.bookinstance_create_get = function (req, res, next) {
   });
 };
 
-// Handle BookInstance create on POST.
 exports.bookinstance_create_post = [
-  // Validate and sanitize fields.
   body("book", "書籍名を指定してください").trim().isLength({ min: 1 }).escape(),
   body("imprint", "版を指定してください")
     .trim()
@@ -70,12 +61,9 @@ exports.bookinstance_create_post = [
     .isISO8601()
     .toDate(),
 
-  // Process request after validation and sanitization.
   (req, res, next) => {
-    // Extract the validation errors from a request.
     const errors = validationResult(req);
 
-    // Create a BookInstance object with escaped and trimmed data.
     var bookinstance = new BookInstance({
       book: req.body.book,
       imprint: req.body.imprint,
@@ -84,12 +72,10 @@ exports.bookinstance_create_post = [
     });
 
     if (!errors.isEmpty()) {
-      // There are errors. Render form again with sanitized values and error messages.
       Book.find({}, "title").exec(function (err, books) {
         if (err) {
           return next(err);
         }
-        // Successful, so render.
         res.render("bookinstance_form", {
           title: "書籍現物登録フォーム",
           book_list: books,
@@ -100,19 +86,16 @@ exports.bookinstance_create_post = [
       });
       return;
     } else {
-      // Data from form is valid
       bookinstance.save(function (err) {
         if (err) {
           return next(err);
         }
-        // Successful - redirect to new record.
         res.redirect(bookinstance.url);
       });
     }
   },
 ];
 
-// Display BookInstance delete form on GET.
 exports.bookinstance_delete_get = function (req, res, next) {
   BookInstance.findById(req.params.id)
     .populate("book")
@@ -121,10 +104,8 @@ exports.bookinstance_delete_get = function (req, res, next) {
         return next(err);
       }
       if (bookinstance == null) {
-        // No results.
         res.redirect("/catalog/bookinstances");
       }
-      // Successful, so render.
       res.render("bookinstance_delete", {
         title: "書籍現物削除",
         bookinstance: bookinstance,
@@ -132,21 +113,16 @@ exports.bookinstance_delete_get = function (req, res, next) {
     });
 };
 
-// Handle BookInstance delete on POST.
 exports.bookinstance_delete_post = function (req, res, next) {
-  // Assume valid BookInstance id in field.
   BookInstance.findByIdAndRemove(req.body.id, function deleteBookInstance(err) {
     if (err) {
       return next(err);
     }
-    // Success, so redirect to list of BookInstance items.
     res.redirect("/catalog/bookinstances");
   });
 };
 
-// Display BookInstance update form on GET.
 exports.bookinstance_update_get = function (req, res, next) {
-  // Get book, authors and genres for form.
   async.parallel(
     {
       bookinstance: function (callback) {
@@ -161,12 +137,10 @@ exports.bookinstance_update_get = function (req, res, next) {
         return next(err);
       }
       if (results.bookinstance == null) {
-        // No results.
         var err = new Error("書籍現物がありません。");
         err.status = 404;
         return next(err);
       }
-      // Success.
       res.render("bookinstance_form", {
         title: "書籍現物更新フォーム",
         book_list: results.books,
@@ -177,9 +151,7 @@ exports.bookinstance_update_get = function (req, res, next) {
   );
 };
 
-// Handle BookInstance update on POST.
 exports.bookinstance_update_post = [
-  // Validate and sanitize fields.
   body("book", "書籍名を指定してください。").trim().isLength({ min: 1 }).escape(),
   body("imprint", "版を指定してください。")
     .trim()
@@ -191,12 +163,9 @@ exports.bookinstance_update_post = [
     .isISO8601()
     .toDate(),
 
-  // Process request after validation and sanitization.
   (req, res, next) => {
-    // Extract the validation errors from a request.
     const errors = validationResult(req);
 
-    // Create a BookInstance object with escaped/trimmed data and current id.
     var bookinstance = new BookInstance({
       book: req.body.book,
       imprint: req.body.imprint,
@@ -206,12 +175,10 @@ exports.bookinstance_update_post = [
     });
 
     if (!errors.isEmpty()) {
-      // There are errors so render the form again, passing sanitized values and errors.
       Book.find({}, "title").exec(function (err, books) {
         if (err) {
           return next(err);
         }
-        // Successful, so render.
         res.render("bookinstance_form", {
           title: "書籍現物更新フォーム",
           book_list: books,
@@ -222,7 +189,6 @@ exports.bookinstance_update_post = [
       });
       return;
     } else {
-      // Data from form is valid.
       BookInstance.findByIdAndUpdate(
         req.params.id,
         bookinstance,
@@ -231,7 +197,6 @@ exports.bookinstance_update_post = [
           if (err) {
             return next(err);
           }
-          // Successful - redirect to detail page.
           res.redirect(thebookinstance.url);
         }
       );

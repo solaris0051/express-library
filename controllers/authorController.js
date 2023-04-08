@@ -4,7 +4,6 @@ var Book = require("../models/book");
 
 const { body, validationResult } = require("express-validator");
 
-// Display list of all Authors.
 exports.author_list = function (req, res, next) {
   Author.find()
     .sort([["family_name", "ascending"]])
@@ -12,7 +11,6 @@ exports.author_list = function (req, res, next) {
       if (err) {
         return next(err);
       }
-      // Successful, so render.
       res.render("author_list", {
         title: "著者リスト",
         author_list: list_authors,
@@ -20,7 +18,6 @@ exports.author_list = function (req, res, next) {
     });
 };
 
-// Display detail page for a specific Author.
 exports.author_detail = function (req, res, next) {
   async.parallel(
     {
@@ -34,14 +31,12 @@ exports.author_detail = function (req, res, next) {
     function (err, results) {
       if (err) {
         return next(err);
-      } // Error in API usage.
+      }
       if (results.author == null) {
-        // No results.
         var err = new Error("著者がありません。");
         err.status = 404;
         return next(err);
       }
-      // Successful, so render.
       res.render("author_detail", {
         title: "著者詳細",
         author: results.author,
@@ -51,14 +46,11 @@ exports.author_detail = function (req, res, next) {
   );
 };
 
-// Display Author create form on GET.
 exports.author_create_get = function (req, res, next) {
   res.render("author_form", { title: "著者登録フォーム" });
 };
 
-// Handle Author create on POST.
 exports.author_create_post = [
-  // Validate and sanitize fields.
   body("first_name")
     .trim()
     .isLength({ min: 1 })
@@ -82,12 +74,9 @@ exports.author_create_post = [
     .isISO8601()
     .toDate(),
 
-  // Process request after validation and sanitization.
   (req, res, next) => {
-    // Extract the validation errors from a request.
     const errors = validationResult(req);
 
-    // Create Author object with escaped and trimmed data
     var author = new Author({
       first_name: req.body.first_name,
       family_name: req.body.family_name,
@@ -96,7 +85,6 @@ exports.author_create_post = [
     });
 
     if (!errors.isEmpty()) {
-      // There are errors. Render form again with sanitized values/errors messages.
       res.render("author_form", {
         title: "著者登録フォーム",
         author: author,
@@ -104,21 +92,16 @@ exports.author_create_post = [
       });
       return;
     } else {
-      // Data from form is valid.
-
-      // Save author.
       author.save(function (err) {
         if (err) {
           return next(err);
         }
-        // Successful - redirect to new author record.
         res.redirect(author.url);
       });
     }
   },
 ];
 
-// Display Author delete form on GET.
 exports.author_delete_get = function (req, res, next) {
   async.parallel(
     {
@@ -134,10 +117,8 @@ exports.author_delete_get = function (req, res, next) {
         return next(err);
       }
       if (results.author == null) {
-        // No results.
         res.redirect("/catalog/authors");
       }
-      // Successful, so render.
       res.render("author_delete", {
         title: "著者削除",
         author: results.author,
@@ -147,7 +128,6 @@ exports.author_delete_get = function (req, res, next) {
   );
 };
 
-// Handle Author delete on POST.
 exports.author_delete_post = function (req, res, next) {
   async.parallel(
     {
@@ -162,9 +142,7 @@ exports.author_delete_post = function (req, res, next) {
       if (err) {
         return next(err);
       }
-      // Success.
       if (results.authors_books.length > 0) {
-        // Author has books. Render in same way as for GET route.
         res.render("author_delete", {
           title: "著者削除",
           author: results.author,
@@ -172,12 +150,10 @@ exports.author_delete_post = function (req, res, next) {
         });
         return;
       } else {
-        // Author has no books. Delete object and redirect to the list of authors.
         Author.findByIdAndRemove(req.body.authorid, function deleteAuthor(err) {
           if (err) {
             return next(err);
           }
-          // Success - go to author list.
           res.redirect("/catalog/authors");
         });
       }
@@ -185,26 +161,21 @@ exports.author_delete_post = function (req, res, next) {
   );
 };
 
-// Display Author update form on GET.
 exports.author_update_get = function (req, res, next) {
   Author.findById(req.params.id, function (err, author) {
     if (err) {
       return next(err);
     }
     if (author == null) {
-      // No results.
       var err = new Error("著者がありません。");
       err.status = 404;
       return next(err);
     }
-    // Success.
     res.render("author_form", { title: "著者更新", author: author });
   });
 };
 
-// Handle Author update on POST.
 exports.author_update_post = [
-  // Validate and santize fields.
   body("first_name")
     .trim()
     .isLength({ min: 1 })
@@ -228,12 +199,9 @@ exports.author_update_post = [
     .isISO8601()
     .toDate(),
 
-  // Process request after validation and sanitization.
   (req, res, next) => {
-    // Extract the validation errors from a request.
     const errors = validationResult(req);
 
-    // Create Author object with escaped and trimmed data (and the old id!)
     var author = new Author({
       first_name: req.body.first_name,
       family_name: req.body.family_name,
@@ -243,7 +211,6 @@ exports.author_update_post = [
     });
 
     if (!errors.isEmpty()) {
-      // There are errors. Render the form again with sanitized values and error messages.
       res.render("author_form", {
         title: "著者更新",
         author: author,
@@ -251,7 +218,6 @@ exports.author_update_post = [
       });
       return;
     } else {
-      // Data from form is valid. Update the record.
       Author.findByIdAndUpdate(
         req.params.id,
         author,
@@ -260,7 +226,6 @@ exports.author_update_post = [
           if (err) {
             return next(err);
           }
-          // Successful - redirect to genre detail page.
           res.redirect(theauthor.url);
         }
       );
