@@ -6,7 +6,7 @@ var logger = require("morgan");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
-const catalogRouter = require("./routes/catalog"); // Import routes for "catalog" area of site
+const catalogRouter = require("./routes/catalog");
 
 const compression = require("compression");
 const helmet = require("helmet");
@@ -25,7 +25,7 @@ const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 
 const dev_db_url =
-  "mongodb+srv://docodoco0713:Ik33e9N6xpHLAL3C@cluster1.eqwnpuc.mongodb.net/express_library?retryWrites=true&w=majority";
+  "mongodb+srv://docodoco0713:Ik33e9N6xpHLAL3C@cluster1.eqwnpuc.mongodb.net/local_library?retryWrites=true&w=majority";
 const mongoDB = process.env.MONGODB_URI || dev_db_url;
 
 main().catch((err) => console.log(err));
