@@ -6,7 +6,6 @@ var author_controller = require("../controllers/authorController");
 var genre_controller = require("../controllers/genreController");
 var book_instance_controller = require("../controllers/bookinstanceController");
 
-/// BOOK ROUTES ///
 router.get("/", book_controller.index);
 router.get("/book/create", book_controller.book_create_get);
 router.post("/book/create", book_controller.book_create_post);
@@ -17,7 +16,6 @@ router.post("/book/:id/update", book_controller.book_update_post);
 router.get("/book/:id", book_controller.book_detail);
 router.get("/books", book_controller.book_list);
 
-/// AUTHOR ROUTES ///
 router.get("/author/create", author_controller.author_create_get);
 router.post("/author/create", author_controller.author_create_post);
 router.get("/author/:id/delete", author_controller.author_delete_get);
@@ -27,7 +25,6 @@ router.post("/author/:id/update", author_controller.author_update_post);
 router.get("/author/:id", author_controller.author_detail);
 router.get("/authors", author_controller.author_list);
 
-/// GENRE ROUTES ///
 router.get("/genre/create", genre_controller.genre_create_get);
 router.post("/genre/create", genre_controller.genre_create_post);
 router.get("/genre/:id/delete", genre_controller.genre_delete_get);
@@ -37,7 +34,6 @@ router.post("/genre/:id/update", genre_controller.genre_update_post);
 router.get("/genre/:id", genre_controller.genre_detail);
 router.get("/genres", genre_controller.genre_list);
 
-/// BOOKINSTANCE ROUTES ///
 router.get(
   "/bookinstance/create",
   book_instance_controller.bookinstance_create_get

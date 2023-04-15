@@ -15,7 +15,7 @@ var app = express();
 
 var RateLimit = require("express-rate-limit");
 var limiter = RateLimit({
-  windowMs: 1 * 60 * 1000, // 1 minute
+  windowMs: 1 * 60 * 1000,
   max: 100,
 });
 
@@ -40,8 +40,14 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(helmet());
-app.use(compression()); // Compress all routes
+app.use(compression());
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      "script-src": ["'self'", "code.jquery.com", "cdn.jsdelivr.net"],
+    },
+  })
+);
 
 app.use(express.static(path.join(__dirname, "public")));
 
