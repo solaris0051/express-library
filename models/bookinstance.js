@@ -1,10 +1,10 @@
-var mongoose = require("mongoose");
+const mongoose = require("mongoose");
 const { DateTime } = require("luxon"); //for date handling
 
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-var BookInstanceSchema = new Schema({
-  book: { type: Schema.ObjectId, ref: "Book", required: true }, // Reference to the associated book.
+const BookInstanceSchema = new Schema({
+  book: { type: Schema.ObjectId, ref: "Book", required: true },
   imprint: { type: String, required: true },
   status: {
     type: String,
@@ -24,7 +24,7 @@ BookInstanceSchema.virtual("due_back_formatted").get(function () {
 });
 
 BookInstanceSchema.virtual("due_back_yyyy_mm_dd").get(function () {
-  return DateTime.fromJSDate(this.due_back).toISODate(); //format 'YYYY-MM-DD'
+  return DateTime.fromJSDate(this.due_back).toISODate();
 });
 
 module.exports = mongoose.model("BookInstance", BookInstanceSchema);

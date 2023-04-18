@@ -1,66 +1,45 @@
-var Genre = require("../models/genre");
-var Book = require("../models/book");
-var async = require("async");
-
+const Genre = require("../models/genre");
+const Book = require("../models/book");
 const { body, validationResult } = require("express-validator");
+const asyncHandler = require("express-async-handler");
 
-exports.genre_list = function (req, res, next) {
-  Genre.find()
-    .sort([["name", "ascending"]])
-    .exec(function (err, list_genres) {
-      if (err) {
-        return next(err);
-      }
-      res.render("genre_list", {
-        title: "ジャンルリスト",
-        list_genres: list_genres,
-      });
-    });
-};
+exports.genre_list = asyncHandler(async (req, res, next) => {
+  const allGenres = await Genre.find().sort({ name: 1 }).exec();
+  res.render("genre_list", {
+    title: "ジャンルリスト",
+    list_genres: allGenres,
+  });
+});
 
-exports.genre_detail = function (req, res, next) {
-  async.parallel(
-    {
-      genre: function (callback) {
-        Genre.findById(req.params.id).exec(callback);
-      },
-      genre_books: function (callback) {
-        Book.find({ genre: req.params.id }).exec(callback);
-      },
-    },
-    function (err, results) {
-      if (err) {
-        return next(err);
-      }
-      if (results.genre == null) {
-        var err = new Error("ジャンルがありません。");
-        err.status = 404;
-        return next(err);
-      }
-      res.render("genre_detail", {
-        title: "ジャンル削除",
-        genre: results.genre,
-        genre_books: results.genre_books,
-      });
-    }
-  );
-};
+exports.genre_detail = asyncHandler(async (req, res, next) => {
+  const [genre, booksInGenre] = await Promise.all([
+    Genre.findById(req.params.id).exec(),
+    Book.find({ genre: req.params.id }, "title summary").exec(),
+  ]);
+  if (genre === null) {
+    const err = new Error("ジャンルがありません。");
+    err.status = 404;
+    return next(err);
+  }
+  res.render("genre_detail", {
+    title: "ジャンル詳細",
+    genre: genre,
+    genre_books: booksInGenre,
+  });
+});
 
-exports.genre_create_get = function (req, res, next) {
+exports.genre_create_get = (req, res, next) => {
   res.render("genre_form", { title: "ジャンル登録フォーム" });
 };
 
 exports.genre_create_post = [
-  body("name", "ジャンルは3文字以上で指定してください。")
+  body("name", "ジャンルは2文字以上で指定してください。")
     .trim()
-    .isLength({ min: 3 })
+    .isLength({ min: 2 })
     .escape(),
-
-  (req, res, next) => {
+  asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
-
-    var genre = new Genre({ name: req.body.name });
-
+    const genre = new Genre({ name: req.body.name });
     if (!errors.isEmpty()) {
       res.render("genre_form", {
         title: "ジャンル登録フォーム",
@@ -69,112 +48,72 @@ exports.genre_create_post = [
       });
       return;
     } else {
-      Genre.findOne({ name: req.body.name }).exec(function (err, found_genre) {
-        if (err) {
-          return next(err);
-        }
-        if (found_genre) {
-          res.redirect(found_genre.url);
-        } else {
-          genre.save(function (err) {
-            if (err) {
-              return next(err);
-            }
-            res.redirect(genre.url);
-          });
-        }
-      });
+      const genreExists = await Genre.findOne({ name: req.body.name }).exec();
+      if (genreExists) {
+        res.redirect(genreExists.url);
+      } else {
+        await genre.save();
+        res.redirect(genre.url);
+      }
     }
-  },
+  }),
 ];
 
-exports.genre_delete_get = function (req, res, next) {
-  async.parallel(
-    {
-      genre: function (callback) {
-        Genre.findById(req.params.id).exec(callback);
-      },
-      genre_books: function (callback) {
-        Book.find({ genre: req.params.id }).exec(callback);
-      },
-    },
-    function (err, results) {
-      if (err) {
-        return next(err);
-      }
-      if (results.genre == null) {
-        res.redirect("/catalog/genres");
-      }
-      res.render("genre_delete", {
-        title: "ジャンル削除",
-        genre: results.genre,
-        genre_books: results.genre_books,
-      });
-    }
-  );
-};
-
-exports.genre_delete_post = function (req, res, next) {
-  async.parallel(
-    {
-      genre: function (callback) {
-        Genre.findById(req.params.id).exec(callback);
-      },
-      genre_books: function (callback) {
-        Book.find({ genre: req.params.id }).exec(callback);
-      },
-    },
-    function (err, results) {
-      if (err) {
-        return next(err);
-      }
-      if (results.genre_books.length > 0) {
-        res.render("genre_delete", {
-          title: "ジャンル削除",
-          genre: results.genre,
-          genre_books: results.genre_books,
-        });
-        return;
-      } else {
-        Genre.findByIdAndRemove(req.body.id, function deleteGenre(err) {
-          if (err) {
-            return next(err);
-          }
-          res.redirect("/catalog/genres");
-        });
-      }
-    }
-  );
-};
-
-exports.genre_update_get = function (req, res, next) {
-  Genre.findById(req.params.id, function (err, genre) {
-    if (err) {
-      return next(err);
-    }
-    if (genre == null) {
-      var err = new Error("ジャンルがありません。");
-      err.status = 404;
-      return next(err);
-    }
-    res.render("genre_form", { title: "ジャンル更新フォーム", genre: genre });
+exports.genre_delete_get = asyncHandler(async (req, res, next) => {
+  const [genre, booksInGenre] = await Promise.all([
+    Genre.findById(req.params.id).exec(),
+    Book.find({ genre: req.params.id }, "title summary").exec(),
+  ]);
+  if (genre === null) {
+    res.redirect("/catalog/genres");
+  }
+  res.render("genre_delete", {
+    title: "ジャンル削除",
+    genre: genre,
+    genre_books: booksInGenre,
   });
-};
+});
+
+exports.genre_delete_post = asyncHandler(async (req, res, next) => {
+  // Get details of genre and all associated books (in parallel)
+  const [genre, booksInGenre] = await Promise.all([
+    Genre.findById(req.params.id).exec(),
+    Book.find({ genre: req.params.id }, "title summary").exec(),
+  ]);
+  if (booksInGenre.length > 0) {
+    res.render("genre_delete", {
+      title: "ジャンル削除",
+      genre: genre,
+      genre_books: booksInGenre,
+    });
+    return;
+  } else {
+    await Genre.findByIdAndRemove(req.body.id);
+    res.redirect("/catalog/genres");
+  }
+});
+
+exports.genre_update_get = asyncHandler(async (req, res, next) => {
+  const genre = await Genre.findById(req.params.id).exec();
+  if (genre === null) {
+    const err = new Error("ジャンルがありません。");
+    err.status = 404;
+    return next(err);
+  }
+  res.render("genre_form", { title: "ジャンル更新フォーム", genre: genre });
+});
 
 exports.genre_update_post = [
   body("name", "ジャンルは3文字以上で指定してください。")
     .trim()
-    .isLength({ min: 3 })
+    .isLength({ min: 2 })
     .escape(),
-
-  (req, res, next) => {
+  asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
-
-    var genre = new Genre({
+    const genre = new Genre({
       name: req.body.name,
       _id: req.params.id,
     });
-
     if (!errors.isEmpty()) {
       res.render("genre_form", {
         title: "ジャンル更新フォーム",
@@ -183,17 +122,8 @@ exports.genre_update_post = [
       });
       return;
     } else {
-      Genre.findByIdAndUpdate(
-        req.params.id,
-        genre,
-        {},
-        function (err, thegenre) {
-          if (err) {
-            return next(err);
-          }
-          res.redirect(thegenre.url);
-        }
-      );
+      await Genre.findByIdAndUpdate(req.params.id, genre);
+      res.redirect(genre.url);
     }
-  },
+  }),
 ];

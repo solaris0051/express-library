@@ -1,52 +1,37 @@
-var Author = require("../models/author");
-var async = require("async");
-var Book = require("../models/book");
-
+const Author = require("../models/author");
+const Book = require("../models/book");
+const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 
-exports.author_list = function (req, res, next) {
-  Author.find()
-    .sort([["family_name", "ascending"]])
-    .exec(function (err, list_authors) {
-      if (err) {
-        return next(err);
-      }
-      res.render("author_list", {
-        title: "著者リスト",
-        author_list: list_authors,
-      });
-    });
-};
+exports.author_list = asyncHandler(async (req, res, next) => {
+  const allAuthors = await Author.find()
+    .sort({ family_name: 1 })
+    .exec();
+  res.render("author_list", {
+    title: "著者リスト",
+    author_list: allAuthors,
+  });
+});
 
-exports.author_detail = function (req, res, next) {
-  async.parallel(
-    {
-      author: function (callback) {
-        Author.findById(req.params.id).exec(callback);
-      },
-      authors_books: function (callback) {
-        Book.find({ author: req.params.id }, "title summary").exec(callback);
-      },
-    },
-    function (err, results) {
-      if (err) {
-        return next(err);
-      }
-      if (results.author == null) {
-        var err = new Error("著者がありません。");
-        err.status = 404;
-        return next(err);
-      }
-      res.render("author_detail", {
-        title: "著者詳細",
-        author: results.author,
-        author_books: results.authors_books,
-      });
-    }
-  );
-};
+exports.author_detail = asyncHandler(async (req, res, next) => {
+  const [author, allBooksByAuthor] = await Promise.all([
+    Author.findById(req.params.id).exec(),
+    Book.find({ author: req.params.id }, "title summary").exec(),
+  ]);
 
-exports.author_create_get = function (req, res, next) {
+  if (author === null) {
+    const err = new Error("著者がありません。");
+    err.status = 404;
+    return next(err);
+  }
+  res.render("author_detail", {
+    title: "著者詳細",
+    author: author,
+    author_books: allBooksByAuthor,
+  });
+});
+
+exports.author_create_get = (req, res, next) => {
   res.render("author_form", { title: "著者登録フォーム" });
 };
 
@@ -74,10 +59,9 @@ exports.author_create_post = [
     .isISO8601()
     .toDate(),
 
-  (req, res, next) => {
+  asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
-
-    var author = new Author({
+    const author = new Author({
       first_name: req.body.first_name,
       family_name: req.body.family_name,
       date_of_birth: req.body.date_of_birth,
@@ -92,88 +76,54 @@ exports.author_create_post = [
       });
       return;
     } else {
-      author.save(function (err) {
-        if (err) {
-          return next(err);
-        }
-        res.redirect(author.url);
-      });
+      await author.save();
+      res.redirect(author.url);
     }
-  },
+  }),
 ];
 
-exports.author_delete_get = function (req, res, next) {
-  async.parallel(
-    {
-      author: function (callback) {
-        Author.findById(req.params.id).exec(callback);
-      },
-      authors_books: function (callback) {
-        Book.find({ author: req.params.id }).exec(callback);
-      },
-    },
-    function (err, results) {
-      if (err) {
-        return next(err);
-      }
-      if (results.author == null) {
-        res.redirect("/catalog/authors");
-      }
-      res.render("author_delete", {
-        title: "著者削除",
-        author: results.author,
-        author_books: results.authors_books,
-      });
-    }
-  );
-};
-
-exports.author_delete_post = function (req, res, next) {
-  async.parallel(
-    {
-      author: function (callback) {
-        Author.findById(req.body.authorid).exec(callback);
-      },
-      authors_books: function (callback) {
-        Book.find({ author: req.body.authorid }).exec(callback);
-      },
-    },
-    function (err, results) {
-      if (err) {
-        return next(err);
-      }
-      if (results.authors_books.length > 0) {
-        res.render("author_delete", {
-          title: "著者削除",
-          author: results.author,
-          author_books: results.authors_books,
-        });
-        return;
-      } else {
-        Author.findByIdAndRemove(req.body.authorid, function deleteAuthor(err) {
-          if (err) {
-            return next(err);
-          }
-          res.redirect("/catalog/authors");
-        });
-      }
-    }
-  );
-};
-
-exports.author_update_get = function (req, res, next) {
-  Author.findById(req.params.id, function (err, author) {
-    if (err) {
-      return next(err);
-    }
-    if (author == null) {
-      var err = new Error("著者がありません。");
-      err.status = 404;
-      return next(err);
-    }
-    res.render("author_form", { title: "著者更新", author: author });
+exports.author_delete_get = asyncHandler(async (req, res, next) => {
+  const [author, allBooksByAuthor] = await Promise.all([
+    Author.findById(req.params.id).exec(),
+    Book.find({ author: req.params.id }, "title summary").exec(),
+  ]);
+  if (author === null) {
+    res.redirect("/catalog/authors");
+  }
+  res.render("author_delete", {
+    title: "著者削除",
+    author: results.author,
+    author_books: allBooksByAuthor,
   });
-};
+});
+
+exports.author_delete_post = asyncHandler(async (req, res, next) => {
+  const [author, allBooksByAuthor] = await Promise.all([
+    Author.findById(req.params.id).exec(),
+    Book.find({ author: req.params.id }, "title summary").exec(),
+  ]);
+  if (allBooksByAuthor.length > 0) {
+    res.render("author_delete", {
+      title: "著者削除",
+      author: author,
+      author_books: allBooksByAuthor,
+    });
+    return;
+  } else {
+    await Author.findByIdAndRemove(req.body.authorid);
+    res.redirect("/catalog/authors");
+  }
+});
+
+exports.author_update_get = asyncHandler(async (req, res, next) => {
+  const author = await Author.findById(req.params.id).exec();
+  if (author === null) {
+    const err = new Error("著者がありません。");
+    err.status = 404;
+    return next(err);
+  }
+  res.render("author_form", { title: "著者更新", author: author });
+});
 
 exports.author_update_post = [
   body("first_name")
@@ -199,10 +149,10 @@ exports.author_update_post = [
     .isISO8601()
     .toDate(),
 
-  (req, res, next) => {
+  asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
 
-    var author = new Author({
+    const author = new Author({
       first_name: req.body.first_name,
       family_name: req.body.family_name,
       date_of_birth: req.body.date_of_birth,
@@ -218,17 +168,8 @@ exports.author_update_post = [
       });
       return;
     } else {
-      Author.findByIdAndUpdate(
-        req.params.id,
-        author,
-        {},
-        function (err, theauthor) {
-          if (err) {
-            return next(err);
-          }
-          res.redirect(theauthor.url);
-        }
-      );
+      await Author.findByIdAndUpdate(req.params.id, author);
+      res.redirect(author.url);
     }
-  },
+  }),
 ];

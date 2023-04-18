@@ -1,9 +1,9 @@
-var mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-var GenreSchema = new Schema({
-  name: { type: String, required: true, minLength: 3, maxLength: 100 },
+const GenreSchema = new Schema({
+  name: { type: String, required: true, minLength: 1, maxLength: 100 },
 });
 
 GenreSchema.virtual("url").get(function () {
