@@ -104,7 +104,7 @@ exports.genre_update_get = asyncHandler(async (req, res, next) => {
 });
 
 exports.genre_update_post = [
-  body("name", "ジャンルは3文字以上で指定してください。")
+  body("name", "ジャンルは2文字以上で指定してください。")
     .trim()
     .isLength({ min: 2 })
     .escape(),
