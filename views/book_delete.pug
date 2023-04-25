@@ -33,7 +33,7 @@ block content
           p.text-warning #{book_copy.status} 
         p #[strong 版:] #{book_copy.imprint}
         if book_copy.status!='Available'
-          p #[strong 返却日:] #{book_copy.due_back}
+          p #[strong 期限:] #{book_copy.due_back}
         p #[strong Id:] 
           a(href=book_copy.url) #{book_copy._id}
 

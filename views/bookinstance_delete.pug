@@ -24,7 +24,7 @@ block content
         span.text-warning #{bookinstance.status} 
       
     if bookinstance.status!='貸出可能'
-      p #[strong 返却日:] #{bookinstance.due_back_formatted}
+      p #[strong 期限:] #{bookinstance.due_back_formatted}
 
   form(method='POST' action='')
     div.form-group
