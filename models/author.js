@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { DateTime } = require("luxon"); // for date handling
+const { DateTime } = require("luxon");
 
 const Schema = mongoose.Schema;
 
