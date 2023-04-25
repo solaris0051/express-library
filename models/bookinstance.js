@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const { DateTime } = require("luxon");
-var moment = require('moment');
+let moment = require('moment');
 
 const Schema = mongoose.Schema;
 
