@@ -33,9 +33,9 @@ exports.genre_create_get = (req, res, next) => {
 };
 
 exports.genre_create_post = [
-  body("name", "ジャンルは2文字以上で指定してください。")
+  body("name", "ジャンルは1文字以上で指定してください。")
     .trim()
-    .isLength({ min: 2 })
+    .isLength({ min: 1 })
     .escape(),
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
