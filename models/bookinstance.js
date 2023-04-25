@@ -18,14 +18,13 @@ const BookInstanceSchema = new Schema({
 
 BookInstanceSchema.virtual("url").get(function () {
   return "/catalog/bookinstance/" + this._id;
-});
 
-BookInstanceSchema.virtual("due_back_formatted").get(function () {
-  return moment(this.due_back).format("YYYY, MM, DD");
-});
+  BookInstanceSchema.virtual("due_back_formatted").get(function () {
+    return moment(this.due_back).format("YYYY, MM, DD");
+  });
 
-BookInstanceSchema.virtual("due_back_yyyy_mm_dd").get(function () {
-  return DateTime.fromJSDate(this.due_back).toISODate();
-});
+  BookInstanceSchema.virtual("due_back_yyyy_mm_dd").get(function () {
+    return DateTime.fromJSDate(this.due_back).toISODate();
+  });
 
-module.exports = mongoose.model("BookInstance", BookInstanceSchema);
+  module.exports = mongoose.model("BookInstance", BookInstanceSchema);
