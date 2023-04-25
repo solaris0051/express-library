@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { DateTime } = require("luxon");
+let moment = require('moment');
 
 const Schema = mongoose.Schema;
 
@@ -21,15 +22,12 @@ AuthorSchema.virtual("url").get(function () {
 AuthorSchema.virtual("lifespan").get(function () {
   let lifetime_string = "";
   if (this.date_of_birth) {
-    lifetime_string = DateTime.fromJSDate(this.date_of_birth).toLocaleString(
-      DateTime.DATE_MED
-    );
+    lifetime_string = moment(this.date_of_birth).format("YYYY, MM, DD");
+
   }
   lifetime_string += " - ";
   if (this.date_of_death) {
-    lifetime_string += DateTime.fromJSDate(this.date_of_death).toLocaleString(
-      DateTime.DATE_MED
-    );
+    lifetime_string += moment(this.date_of_birth).format("YYYY, MM, DD");
   }
   return lifetime_string;
 });
