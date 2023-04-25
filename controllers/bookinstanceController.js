@@ -108,7 +108,6 @@ exports.bookinstance_update_get = asyncHandler(async (req, res, next) => {
 });
 
 exports.bookinstance_update_post = [
-  // Validate and sanitize fields.
   body("book", "書籍名を指定してください。").trim().isLength({ min: 1 }).escape(),
   body("imprint", "版を指定してください。")
     .trim()
