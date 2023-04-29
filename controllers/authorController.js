@@ -41,15 +41,15 @@ exports.author_create_post = [
     .isLength({ min: 1 })
     .escape()
     .withMessage("名を指定してください。")
-    .isAlphanumeric()
-    .withMessage("氏は半角アルファベットで指定してください。"),
+    .isFullWidth()
+    .withMessage("氏は全角文字で指定してください。"),
   body("family_name")
     .trim()
     .isLength({ min: 1 })
     .escape()
     .withMessage("氏を指定してください。")
-    .isAlphanumeric()
-    .withMessage("氏は半角アルファベットで指定してください。"),
+    .isFullWidth()
+    .withMessage("氏は全角文字で指定してください。"),
   body("date_of_birth", "無効な生年月日です。")
     .optional({ checkFalsy: true })
     .isISO8601()
@@ -131,15 +131,15 @@ exports.author_update_post = [
     .isLength({ min: 1 })
     .escape()
     .withMessage("名を指定してください。")
-    .isAlphanumeric()
-    .withMessage("名は半角アルファベットで指定してください。"),
+    .isFullWidth()
+    .withMessage("名は全角文字で指定してください。"),
   body("family_name")
     .trim()
     .isLength({ min: 1 })
     .escape()
     .withMessage("氏を指定してください。")
-    .isAlphanumeric()
-    .withMessage("氏は半角アルファベットで指定してください。"),
+    .isFullWidth()
+    .withMessage("氏は全角文字で指定してください。"),
   body("date_of_birth", "無効な生年月日です。")
     .optional({ checkFalsy: true })
     .isISO8601()
