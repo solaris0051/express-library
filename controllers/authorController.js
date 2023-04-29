@@ -6,6 +6,7 @@ const { body, validationResult } = require("express-validator");
 exports.author_list = asyncHandler(async (req, res, next) => {
   const allAuthors = await Author.find()
     .sort({ family_name: 1 })
+    .collation({ locale: 'ja' })
     .exec();
   res.render("author_list", {
     title: "著者リスト",
