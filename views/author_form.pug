@@ -6,9 +6,9 @@ block content
   form(method='POST' action='')
     div.form-group
       label(for='family_name') 氏:
-      input#family_name.form-control(type='text', placeholder='半角アルファベットで入力' name='family_name' required='true' value=(undefined===author ? '' : author.family_name))
+      input#family_name.form-control(type='text', placeholder='全角で入力' name='family_name' required='true' value=(undefined===author ? '' : author.family_name))
       label(for='first_name') 名:
-      input#first_name.form-control(type='text', placeholder='半角アルファベットで入力' name='first_name' required='true' value=(undefined===author ? '' : author.first_name) )
+      input#first_name.form-control(type='text', placeholder='全角で入力' name='first_name' required='true' value=(undefined===author ? '' : author.first_name) )
     div.form-group
       label(for='date_of_birth') 生年月日:
       input#date_of_birth.form-control(type='date', name='date_of_birth' value=(undefined===author ? '' : author.date_of_birth_yyyy_mm_dd) )
