@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { DateTime } = require("luxon");
 let moment = require('moment');
 
 const Schema = mongoose.Schema;
@@ -30,14 +29,6 @@ AuthorSchema.virtual("lifespan").get(function () {
     lifetime_string += moment(this.date_of_birth).format("YYYY, MM, DD");
   }
   return lifetime_string;
-});
-
-AuthorSchema.virtual("date_of_birth_yyyy_mm_dd").get(function () {
-  return DateTime.fromJSDate(this.date_of_birth).toISODate();
-});
-
-AuthorSchema.virtual("date_of_death_yyyy_mm_dd").get(function () {
-  return DateTime.fromJSDate(this.date_of_death).toISODate();
 });
 
 module.exports = mongoose.model("Author", AuthorSchema);
