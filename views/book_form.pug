@@ -5,8 +5,8 @@ block content
 
   form(method='POST' action='')
     div.form-group
-      label(for='title') 書籍名:
-      input#title.form-control(type='text', placeholder='書籍名' name='title' required='true' value=(undefined===book ? '' : book.title) )
+      label(for='title') 書誌情報:
+      input#title.form-control(type='text', placeholder='書誌情報' name='title' required='true' value=(undefined===book ? '' : book.title) )
     div.form-group
       label(for='author') 著者:
       select#author.form-control(type='select', placeholder='著者を選択' name='author' required='true' )

@@ -17,7 +17,7 @@ block content
   
   if book_instances.length
   
-    p #[strong この書籍名を削除する前に、以下の書籍現物を削除してください。]
+    p #[strong この書誌情報を削除する前に、以下の書籍現物を削除してください。]
   
     div(style='margin-left:20px;margin-top:20px')
 
@@ -38,7 +38,7 @@ block content
           a(href=book_copy.url) #{book_copy._id}
 
   else
-    p この書籍名を削除してよろしいですか。
+    p この書誌情報を削除してよろしいですか。
     
     form(method='POST' action='')
       div.form-group

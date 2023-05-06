@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  h1 書籍名: #{book.title}
+  h1 書誌情報: #{book.title}
   
   p #[strong 著者:] 
     a(href=book.author.url) #{book.author.name}
@@ -35,6 +35,6 @@ block content
       
   hr
   p
-    a(href=book.url+'/delete') 書籍名削除
+    a(href=book.url+'/delete') 書誌情報削除
   p
-    a(href=book.url+'/update') 書籍名更新
+    a(href=book.url+'/update') 書誌情報更新
