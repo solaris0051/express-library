@@ -36,7 +36,7 @@ exports.bookinstance_create_get = asyncHandler(async (req, res, next) => {
 });
 
 exports.bookinstance_create_post = [
-  body("book", "書誌情報を指定してください").trim().isLength({ min: 1 }).escape(),
+  body("book", "書籍名を指定してください").trim().isLength({ min: 1 }).escape(),
   body("imprint", "版を指定してください")
     .trim()
     .isLength({ min: 1 })
@@ -108,7 +108,7 @@ exports.bookinstance_update_get = asyncHandler(async (req, res, next) => {
 });
 
 exports.bookinstance_update_post = [
-  body("book", "書誌情報を指定してください。").trim().isLength({ min: 1 }).escape(),
+  body("book", "書籍名を指定してください。").trim().isLength({ min: 1 }).escape(),
   body("imprint", "版を指定してください。")
     .trim()
     .isLength({ min: 1 })

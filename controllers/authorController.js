@@ -93,7 +93,7 @@ exports.author_delete_get = asyncHandler(async (req, res, next) => {
   }
   res.render("author_delete", {
     title: "著者削除",
-    author: results.author,
+    author: author,
     author_books: allBooksByAuthor,
   });
 });

@@ -76,7 +76,7 @@ exports.book_create_post = [
     }
     next();
   },
-  body("title", "書誌情報を指定してください。")
+  body("title", "書籍名を指定してください。")
     .trim()
     .isLength({ min: 1 })
     .escape(),
@@ -196,7 +196,7 @@ exports.book_update_post = [
     }
     next();
   },
-  body("title", "書誌情報を指定してください。")
+  body("title", "書籍名を指定してください。")
     .trim()
     .isLength({ min: 1 })
     .escape(),
