@@ -25,15 +25,15 @@ block content
     
       each book_copy in book_instances
         hr
-        if book_copy.status=='Available'
+        if book_copy.status=='貸出可能'
           p.text-success #{book_copy.status}
-        else if book_copy.status=='Maintenance'
+        else if book_copy.status=='準備中'
           p.text-danger #{book_copy.status}
         else
           p.text-warning #{book_copy.status} 
         p #[strong 版:] #{book_copy.imprint}
-        if book_copy.status!='Available'
-          p #[strong 期限:] #{book_copy.due_back}
+        if book_copy.status!='貸出可能'
+          p #[strong 期限:] #{book_copy.due_back_formatted}
         p #[strong Id:] 
           a(href=book_copy.url) #{book_copy._id}
 
