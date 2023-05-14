@@ -53,7 +53,8 @@ app.use(limiter);
 
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
-const mongoDB = mongodb+srv://docodoco0713:0Y8nczZBMCaiUe40@cluster0.iki2ezu.mongodb.net/local_library?retryWrites=true&w=majority;
+const dev_db_url = "mongodb+srv://docodoco0713:0Y8nczZBMCaiUe40@cluster0.iki2ezu.mongodb.net/local_library?retryWrites=true&w=majority";
+const mongoDB = process.env.MONGODB_URI || dev_db_url;
 async function main() {
   await mongoose.connect(mongoDB);
 }
