@@ -52,8 +52,10 @@ const limiter = RateLimit({
 app.use(limiter);
 
 const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+dotenv.config();
 mongoose.set("strictQuery", false);
-const mongoDB = "mongodb+srv://docodoco0713:0Y8nczZBMCaiUe40@cluster0.iki2ezu.mongodb.net/local_library?retryWrites=true&w=majority";
+const mongoDB = `mongodb+srv://${process.env.username}:${process.env.password}@cluster0.iki2ezu.mongodb.net/local_library?retryWrites=true&w=majority`;
 async function main() {
   await mongoose.connect(mongoDB);
 }
