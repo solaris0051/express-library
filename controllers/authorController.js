@@ -43,7 +43,7 @@ exports.author_create_post = [
     .escape()
     .withMessage("名を指定してください。")
     .isFullWidth()
-    .withMessage("氏は全角文字で指定してください。"),
+    .withMessage("名は全角文字で指定してください。"),
   body("family_name")
     .trim()
     .isLength({ min: 1 })
