@@ -24,7 +24,7 @@ AuthorSchema.virtual("lifespan").get(function () {
     lifetime_string = moment(this.date_of_birth).format("YYYY, MM, DD");
 
   }
-  lifetime_string += " - ";
+  lifetime_string += " ～ ";
   if (this.date_of_death) {
     lifetime_string += moment(this.date_of_birth).format("YYYY, MM, DD");
   }
