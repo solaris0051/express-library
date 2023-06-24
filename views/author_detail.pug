@@ -4,11 +4,11 @@ block content
 
   h1 著者: #{author.name}
   p (#{author.lifespan})
-  
+
   div(style='margin-left:20px;margin-top:20px')
 
     h4 書誌情報
-    
+
     dl
     each book in author_books
       dt 
@@ -17,7 +17,7 @@ block content
 
     else
       p この著者の書誌情報はありません。
-      
+
   hr
   p
     a(href=author.url+'/delete') 著者削除

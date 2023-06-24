@@ -3,11 +3,11 @@ extends layout
 block content
 
   h1 ジャンル: #{genre.name}
-  
+
   div(style='margin-left:20px;margin-top:20px')
 
     h4 書誌情報
-    
+
     dl
     each book in genre_books
       dt 
@@ -16,7 +16,7 @@ block content
 
     else
       p このジャンルの書誌情報はありません。
-      
+
   hr
   p
     a(href=genre.url+'/delete') ジャンル削除

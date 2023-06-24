@@ -2,7 +2,7 @@ extends layout
 
 block content
   h1 書誌情報: #{book.title}
-  
+
   p #[strong 著者:] 
     a(href=book.author.url) #{book.author.name}
   p #[strong 要約:] #{book.summary}
@@ -12,10 +12,10 @@ block content
       a(href=val.url) #{val.name}
       if index < book.genre.length - 1
         |, 
-  
+
   div(style='margin-left:20px;margin-top:20px')
     h4 書籍現物
-    
+
     each val in book_instances
       hr
       if val.status=='貸出可能'
@@ -29,10 +29,10 @@ block content
         p #[strong 期限:] #{val.due_back_formatted}
       p #[strong Id:] 
         a(href=val.url) #{val._id}
- 
+
     else
       p 書籍現物はありません。
-      
+
   hr
   p
     a(href=book.url+'/delete') 書誌情報削除

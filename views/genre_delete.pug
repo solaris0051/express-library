@@ -3,15 +3,15 @@ extends layout
 block content
 
   h1 ジャンル削除: #{genre.name}
-  
+
   if genre_books.length
-  
+
     p #[strong ジャンルを削除する前に以下の書誌情報を削除してください。]
-  
+
     div(style='margin-left:20px;margin-top:20px')
 
       h4 書誌情報
-    
+
       dl
       each book in genre_books
         dt 
@@ -20,7 +20,7 @@ block content
 
   else
     p このジャンルを削除してよろしいですか。
-    
+
     form(method='POST' action='')
       div.form-group
         input#id.form-control(type='hidden',name='id', required='true', value=genre._id )

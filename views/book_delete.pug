@@ -3,7 +3,7 @@ extends layout
 block content
 
   h1 #{title}: #{book.title}
-  
+
   p #[strong 著者:] 
     a(href=book.author.url) #{book.author.name}
   p #[strong 要約:] #{book.summary}
@@ -14,15 +14,15 @@ block content
       |, 
 
   hr
-  
+
   if book_instances.length
-  
+
     p #[strong この書誌情報を削除する前に、以下の書籍現物を削除してください。]
-  
+
     div(style='margin-left:20px;margin-top:20px')
 
       h4 書籍現物
-    
+
       each book_copy in book_instances
         hr
         if book_copy.status=='貸出可能'
@@ -39,7 +39,7 @@ block content
 
   else
     p この書誌情報を削除してよろしいですか。
-    
+
     form(method='POST' action='')
       div.form-group
         input#id.form-control(type='hidden',name='id', required='true', value=book._id )

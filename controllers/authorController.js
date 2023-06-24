@@ -52,11 +52,11 @@ exports.author_create_post = [
     .isFullWidth()
     .withMessage("氏は全角文字で指定してください。"),
   body("date_of_birth", "無効な生年月日です。")
-    .optional({ checkFalsy: true })
+    .optional({ values: "falsy" })
     .isISO8601()
     .toDate(),
   body("date_of_death", "無効な没年月日です。")
-    .optional({ checkFalsy: true })
+    .optional({ values: "falsy" })
     .isISO8601()
     .toDate(),
 
@@ -142,11 +142,11 @@ exports.author_update_post = [
     .isFullWidth()
     .withMessage("氏は全角文字で指定してください。"),
   body("date_of_birth", "無効な生年月日です。")
-    .optional({ checkFalsy: true })
+    .optional({ values: "falsy" })
     .isISO8601()
     .toDate(),
   body("date_of_death", "無効な没年月日です。")
-    .optional({ checkFalsy: true })
+    .optional({ values: "falsy" })
     .isISO8601()
     .toDate(),
 

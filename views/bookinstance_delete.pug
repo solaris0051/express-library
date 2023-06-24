@@ -3,16 +3,16 @@ extends layout
 block content
 
   h1= title
-  
+
   p #[strong この書籍現物を削除してよろしいですか。]
-  
+
   div(style="margin-left:20px")
 
     p #[strong ID]: #{bookinstance._id}
-  
+
     p #[strong 書籍名:] 
       a(href=bookinstance.book.url) #{bookinstance.book.title}
-    
+
     p #[strong 版:] #{bookinstance.imprint}
 
     p #[strong 状況:] 
@@ -22,7 +22,7 @@ block content
         span.text-danger #{bookinstance.status}
       else
         span.text-warning #{bookinstance.status} 
-      
+
     if bookinstance.status!='貸出可能'
       p #[strong 期限:] #{bookinstance.due_back_formatted}
 

@@ -43,7 +43,7 @@ exports.bookinstance_create_post = [
     .escape(),
   body("status").escape(),
   body("due_back", "日付が正しくありません。")
-    .optional({ checkFalsy: true })
+    .optional({ values: "falsy" })
     .isISO8601()
     .toDate(),
   asyncHandler(async (req, res, next) => {
@@ -115,7 +115,7 @@ exports.bookinstance_update_post = [
     .escape(),
   body("status").escape(),
   body("due_back", "日付が正しくありません。")
-    .optional({ checkFalsy: true })
+    .optional({ values: "falsy" })
     .isISO8601()
     .toDate(),
   asyncHandler(async (req, res, next) => {

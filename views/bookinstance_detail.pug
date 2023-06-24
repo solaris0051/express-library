@@ -3,7 +3,7 @@ extends layout
 block content
 
   h1 ID: #{bookinstance._id}
-  
+
   p #[strong 書籍名:] 
     a(href=bookinstance.book.url) #{bookinstance.book.title}
   p #[strong 版:] #{bookinstance.imprint}
@@ -15,7 +15,7 @@ block content
       span.text-danger #{bookinstance.status}
     else
       span.text-warning #{bookinstance.status} 
-      
+
   if bookinstance.status!='貸出可能'
     p #[strong 期限:] #{bookinstance.due_back_formatted}
 

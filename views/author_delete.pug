@@ -4,15 +4,15 @@ block content
 
   h1 #{title}: #{author.name}
   p= author.lifespan
-  
+
   if author_books.length
-  
+
     p #[strong この著者を削除する前に、以下の書誌情報を削除してください。]
-  
+
     div(style='margin-left:20px;margin-top:20px')
 
       h4 書誌情報
-    
+
       dl
       each book in author_books
         dt 
@@ -21,7 +21,7 @@ block content
 
   else
     p この著者を削除してよろしいですか。
-    
+
     form(method='POST' action='')
       div.form-group
         input#authorid.form-control(type='hidden',name='authorid', required='true', value=author._id )
