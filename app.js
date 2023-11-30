@@ -44,12 +44,12 @@ app.use(
   })
 );
 
-const RateLimit = require("express-rate-limit");
-const limiter = RateLimit({
-  windowMs: 1 * 60 * 1000,
-  max: 100,
-});
-app.use(limiter);
+// const RateLimit = require("express-rate-limit");
+// const limiter = RateLimit({
+//   windowMs: 1 * 60 * 1000,
+//   max: 100,
+// });
+// app.use(limiter);
 
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
