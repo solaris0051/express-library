@@ -36,7 +36,7 @@ exports.book_list = asyncHandler(async (req, res, next) => {
     .collation({ locale: 'ja' })
     .populate("author")
     .exec();
-  res.render("book_list", { title: "書誌情報リスト", book_list: allBooks });
+  res.render("book_list", { title: "書籍マスタリスト", book_list: allBooks });
 });
 
 exports.book_detail = asyncHandler(async (req, res, next) => {
@@ -45,7 +45,7 @@ exports.book_detail = asyncHandler(async (req, res, next) => {
     BookInstance.find({ book: req.params.id }).exec(),
   ]);
   if (book === null) {
-    const err = new Error("書誌情報がありません。");
+    const err = new Error("書籍マスタがありません。");
     err.status = 404;
     return next(err);
   }
@@ -62,7 +62,7 @@ exports.book_create_get = asyncHandler(async (req, res, next) => {
     Genre.find().exec(),
   ]);
   res.render("book_form", {
-    title: "書誌情報登録フォーム",
+    title: "書籍マスタ登録フォーム",
     authors: allAuthors,
     genres: allGenres,
   });
@@ -110,7 +110,7 @@ exports.book_create_post = [
         }
       }
       res.render("book_form", {
-        title: "書誌情報登録フォーム",
+        title: "書籍マスタ登録フォーム",
         authors: allAuthors,
         genres: allGenres,
         book: book,
@@ -132,7 +132,7 @@ exports.book_delete_get = asyncHandler(async (req, res, next) => {
     res.redirect("/catalog/books");
   }
   res.render("book_delete", {
-    title: "書誌情報削除",
+    title: "書籍マスタ削除",
     book: book,
     book_instances: bookInstances,
   });
@@ -148,7 +148,7 @@ exports.book_delete_post = asyncHandler(async (req, res, next) => {
   }
   if (bookInstances.length > 0) {
     res.render("book_delete", {
-      title: "書誌情報削除",
+      title: "書籍マスタ削除",
       book: book,
       book_instances: bookInstances,
     });
@@ -166,7 +166,7 @@ exports.book_update_get = asyncHandler(async (req, res, next) => {
     Genre.find().exec(),
   ]);
   if (book === null) {
-    const err = new Error("書誌情報がありません。");
+    const err = new Error("書籍マスタがありません。");
     err.status = 404;
     return next(err);
   }
@@ -178,7 +178,7 @@ exports.book_update_get = asyncHandler(async (req, res, next) => {
     }
   }
   res.render("book_form", {
-    title: "書誌情報更新",
+    title: "書籍マスタ更新",
     authors: allAuthors,
     genres: allGenres,
     book: book,
@@ -231,7 +231,7 @@ exports.book_update_post = [
         }
       }
       res.render("book_form", {
-        title: "書誌情報更新",
+        title: "書籍マスタ更新",
         authors: allAuthors,
         genres: allGenres,
         book: book,

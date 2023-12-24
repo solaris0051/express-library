@@ -22,7 +22,7 @@ exports.bookinstance_detail = asyncHandler(async (req, res, next) => {
     return next(err);
   }
   res.render("bookinstance_detail", {
-    title: "書誌情報:",
+    title: "書籍マスタ:",
     bookinstance: bookInstance,
   });
 });
