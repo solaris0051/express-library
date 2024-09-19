@@ -9,9 +9,11 @@ block content
   p #[strong 要約:] #{book.summary}
   p #[strong ISBN:] #{book.isbn}
   p #[strong ジャンル:] 
-    each val in book.genre
+    each val, index in book.genre
       a(href=val.url) #{val.name}
-      |, 
+      if index < book.genre.length - 1
+        |,&nbsp;
+
 
   hr
 
@@ -40,8 +42,8 @@ block content
   else
     p この書籍を削除してよろしいですか。
 
-    form(method='POST' action='')
+    form(method='POST')
       div.form-group
-        input#id.form-control(type='hidden',name='id', required='true', value=book._id )
+        input#id.form-control(type='hidden',name='id', value=book._id )
 
       button.btn.btn-primary(type='submit') 削除

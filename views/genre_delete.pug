@@ -13,16 +13,16 @@ block content
       h4 書籍マスタ
 
       dl
-      each book in genre_books
-        dt 
-          a(href=book.url) #{book.title}
-        dd #{book.summary}
+        each book in genre_books
+          dt 
+            a(href=book.url) #{book.title}
+          dd #{book.summary}
 
   else
     p このジャンルを削除してよろしいですか。
 
-    form(method='POST' action='')
+    form(method='POST')
       div.form-group
-        input#id.form-control(type='hidden',name='id', required='true', value=genre._id )
+        input#id.form-control(type='hidden', name='id', value=genre._id )
 
       button.btn.btn-primary(type='submit') 削除

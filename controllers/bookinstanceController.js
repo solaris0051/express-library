@@ -28,7 +28,7 @@ exports.bookinstance_detail = asyncHandler(async (req, res, next) => {
 });
 
 exports.bookinstance_create_get = asyncHandler(async (req, res, next) => {
-  const allBooks = await Book.find({}, "title").exec();
+  const allBooks = await Book.find({}, "title").sort({ title: 1 }).exec();
   res.render("bookinstance_form", {
     title: "書籍現物登録フォーム",
     book_list: allBooks,
@@ -36,12 +36,16 @@ exports.bookinstance_create_get = asyncHandler(async (req, res, next) => {
 });
 
 exports.bookinstance_create_post = [
-  body("book", "書籍名を指定してください").trim().isLength({ min: 1 }).escape(),
+  body("book", "書籍名を指定してください")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
   body("imprint", "版を指定してください")
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body("status").escape(),
+  body("status")
+    .escape(),
   body("due_back", "日付が正しくありません。")
     .optional({ values: "falsy" })
     .isISO8601()
@@ -55,7 +59,7 @@ exports.bookinstance_create_post = [
       due_back: req.body.due_back,
     });
     if (!errors.isEmpty()) {
-      const allBooks = await Book.find({}, "title").exec();
+      const allBooks = await Book.find({}, "title").sort({ title: 1 }).exec();
       res.render("bookinstance_form", {
         title: "書籍現物登録フォーム",
         book_list: allBooks,
@@ -85,7 +89,7 @@ exports.bookinstance_delete_get = asyncHandler(async (req, res, next) => {
 });
 
 exports.bookinstance_delete_post = asyncHandler(async (req, res, next) => {
-  await BookInstance.findByIdAndRemove(req.body.id);
+  await BookInstance.findByIdAndDelete(req.body.id);
   res.redirect("/catalog/bookinstances");
 });
 
@@ -108,12 +112,16 @@ exports.bookinstance_update_get = asyncHandler(async (req, res, next) => {
 });
 
 exports.bookinstance_update_post = [
-  body("book", "書籍名を指定してください。").trim().isLength({ min: 1 }).escape(),
+  body("book", "書籍名を指定してください。")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
   body("imprint", "版を指定してください。")
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body("status").escape(),
+  body("status")
+    .escape(),
   body("due_back", "日付が正しくありません。")
     .optional({ values: "falsy" })
     .isISO8601()

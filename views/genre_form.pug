@@ -4,10 +4,10 @@ block content
 
   h1 #{title}
 
-  form(method='POST' action='')
+  form(method='POST')
     div.form-group
       label(for='name') ジャンル:
-      input#name.form-control(type='text', placeholder='芸術. 美術、哲学など' name='name' required='true' value=(undefined===genre ? '' : genre.name) )
+      input#name.form-control(type='text', placeholder='芸術. 美術、哲学など' name='name' required value=(undefined===genre ? '' : genre.name) )
     button.btn.btn-primary(type='submit') 送信
 
   if errors 

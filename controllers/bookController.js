@@ -18,7 +18,7 @@ exports.index = asyncHandler(async (req, res, next) => {
     BookInstance.countDocuments({}).exec(),
     BookInstance.countDocuments({ status: "貸出可能" }).exec(),
     Author.countDocuments({}).exec(),
-    Author.countDocuments({}).exec(),
+    Genre.countDocuments({}).exec(),
   ]);
   res.render("index", {
     title: "書籍管理ホーム",
@@ -58,8 +58,8 @@ exports.book_detail = asyncHandler(async (req, res, next) => {
 
 exports.book_create_get = asyncHandler(async (req, res, next) => {
   const [allAuthors, allGenres] = await Promise.all([
-    Author.find().exec(),
-    Genre.find().exec(),
+    Author.find().sort({ family_name: 1 }).exec(),
+    Genre.find().sort({ name: 1 }).exec(),
   ]);
   res.render("book_form", {
     title: "書籍登録フォーム",
@@ -70,9 +70,8 @@ exports.book_create_get = asyncHandler(async (req, res, next) => {
 
 exports.book_create_post = [
   (req, res, next) => {
-    if (!(req.body.genre instanceof Array)) {
-      if (typeof req.body.genre === "undefined") req.body.genre = [];
-      else req.body.genre = new Array(req.body.genre);
+    if (!Array.isArray(req.body.genre)) {
+      req.body.genre = typeof req.body.genre === "undefined" ? [] : [req.body.genre];
     }
     next();
   },
@@ -88,8 +87,12 @@ exports.book_create_post = [
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body("isbn", "ISBNを指定してください。").trim().isLength({ min: 1 }).escape(),
-  body("genre.*").escape(),
+  body("isbn", "ISBNを指定してください。")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("genre.*")
+    .escape(),
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
     const book = new Book({
@@ -101,8 +104,8 @@ exports.book_create_post = [
     });
     if (!errors.isEmpty()) {
       const [allAuthors, allGenres] = await Promise.all([
-        Author.find().exec(),
-        Genre.find().exec(),
+        Author.find().sort({ family_name: 1 }).exec(),
+        Genre.find().sort({ name: 1 }).exec(),
       ]);
       for (const genre of allGenres) {
         if (book.genre.indexOf(genre._id) > -1) {
@@ -154,29 +157,25 @@ exports.book_delete_post = asyncHandler(async (req, res, next) => {
     });
     return;
   } else {
-    await Book.findByIdAndRemove(req.body.id);
+    await Book.findByIdAndDelete(req.body.id);
     res.redirect("/catalog/books");
   }
 });
 
 exports.book_update_get = asyncHandler(async (req, res, next) => {
   const [book, allAuthors, allGenres] = await Promise.all([
-    Book.findById(req.params.id).populate("author").populate("genre").exec(),
-    Author.find().exec(),
-    Genre.find().exec(),
+    Book.findById(req.params.id).populate("author").exec(),
+    Author.find().sort({ family_name: 1 }).exec(),
+    Genre.find().sort({ name: 1 }).exec(),
   ]);
   if (book === null) {
     const err = new Error("書籍がありません。");
     err.status = 404;
     return next(err);
   }
-  for (const genre of allGenres) {
-    for (const book_g of book.genre) {
-      if (genre._id.toString() === book_g._id.toString()) {
-        genre.checked = "true";
-      }
-    }
-  }
+  allGenres.forEach(genre => {
+    if (book.genre.includes(genre._id)) genre.checked = "true";
+  });
   res.render("book_form", {
     title: "書籍更新",
     authors: allAuthors,
@@ -208,8 +207,12 @@ exports.book_update_post = [
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body("isbn", "ISBNを指定してください。").trim().isLength({ min: 1 }).escape(),
-  body("genre.*").escape(),
+  body("isbn", "ISBNを指定してください。")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("genre.*")
+    .escape(),
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
     const book = new Book({
@@ -222,11 +225,11 @@ exports.book_update_post = [
     });
     if (!errors.isEmpty()) {
       const [allAuthors, allGenres] = await Promise.all([
-        Author.find().exec(),
-        Genre.find().exec(),
+        Author.find().sort({ family_name: 1 }).exec(),
+        Genre.find().sort({ name: 1 }).exec(),
       ]);
       for (const genre of allGenres) {
-        if (book.genre.indexOf(genre._id) > -1) {
+        if (book.genre.includes(genre._id)) {
           genre.checked = "true";
         }
       }
