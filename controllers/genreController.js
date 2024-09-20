@@ -88,7 +88,7 @@ exports.genre_delete_post = asyncHandler(async (req, res, next) => {
     });
     return;
   } else {
-    await Genre.findByIdAnDelete(req.body.id);
+    await Genre.findByIdAndDelete(req.body.id);
     res.redirect("/catalog/genres");
   }
 });
