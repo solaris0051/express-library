@@ -15,10 +15,10 @@ block content
             option(value=book._id) #{book.title}
     div.form-group
       label(for='imprint') 版:
-      input#imprint.form-control(type='text', placeholder='発行者と発行日' name='imprint' required value=(undefined===bookinstance ? '' : bookinstance.imprint) )
+      input#imprint.form-control(type='text' placeholder='発行者と発行日' name='imprint' required value=(undefined===bookinstance ? '' : bookinstance.imprint) )
     div.form-group
       label(for='due_back') 期限:
-      input#due_back.form-control(type='date', name='due_back' value=(undefined===bookinstance ? '' : bookinstance.due_back_yyyy_mm_dd))
+      input#due_back.form-control(type='date' name='due_back' value=(undefined===bookinstance ? '' : bookinstance.due_back_yyyy_mm_dd))
     div.form-group
       label(for='status') 状況:
       select#status.form-control(name='status' required)
